@@ -1,4 +1,3 @@
-
 let scene, camera, renderer, player, targets = [], bullets = [];
 
 function init() {
