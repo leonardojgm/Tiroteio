@@ -19,12 +19,12 @@ function init() {
   player.position.set(0, 1, 0);
   scene.add(player);
 
-  // Alvos agora são esferas
+  // Alvos agora são cilindros caindo de cima
   for (let i = 0; i < 5; i++) {
-    const targetGeometry = new THREE.SphereGeometry(0.5, 32, 32);
+    const targetGeometry = new THREE.CylinderGeometry(0.5, 0.5, 2, 32);
     const targetMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
     let target = new THREE.Mesh(targetGeometry, targetMaterial);
-    target.position.set(Math.random() * 10 - 5, 0.5, Math.random() * 10 - 5);
+    target.position.set(Math.random() * 10 - 5, 5, Math.random() * 10 - 5);
     targets.push(target);
     scene.add(target);
   }
@@ -42,12 +42,13 @@ function init() {
 function animate() {
   requestAnimationFrame(animate);
 
-  // Atualizar a posição dos alvos (movimentação simples)
+  // Atualizar a posição dos alvos (eles estão caindo)
   targets.forEach(target => {
-    target.position.z += 0.05;
-    if (target.position.z > 5) {
-      target.position.z = -5;
+    target.position.y -= 0.05;  // Os alvos caem de cima para baixo
+    if (target.position.y < -5) {
+      target.position.y = 5;
       target.position.x = Math.random() * 10 - 5;
+      target.position.z = Math.random() * 10 - 5;
     }
   });
 
@@ -92,7 +93,7 @@ function moveBackward() {
 }
 
 function shoot() {
-  const bulletGeometry = new THREE.SphereGeometry(0.1, 8, 8);
+  const bulletGeometry = new THREE.CylinderGeometry(0.1, 0.1, 1, 8);
   const bulletMaterial = new THREE.MeshBasicMaterial({ color: 0xffff00 });
   let bullet = new THREE.Mesh(bulletGeometry, bulletMaterial);
   bullet.position.set(player.position.x, player.position.y, player.position.z);
